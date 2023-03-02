@@ -1,4 +1,5 @@
-import { TextField } from "@mui/material";
+import { CheckBox } from "@mui/icons-material";
+import { FormControlLabel, FormGroup, TextField } from "@mui/material";
 import React from "react";
 import { studentProps } from "../Type/type";
 
@@ -9,6 +10,11 @@ const StudentForm = (props: studentProps) => {
       {props.formArr.map((item) => {
         return <TextField label={item.label} variant="outlined" fullWidth />;
       })}
+      <div>
+        {props.qualification.map((item) => {
+          return <FormControlLabel control={<CheckBox />} label={item.label} />;
+        })}
+      </div>
     </div>
   );
 };
