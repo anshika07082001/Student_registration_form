@@ -11,3 +11,14 @@
   width: 50%;
   margin: auto;
 }
+
+.formdetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.css-bhp9pd-MuiPaper-root-MuiCard-root {
+  width: 70% !important;
+  margin: auto;
+  padding: 10px;
+}
