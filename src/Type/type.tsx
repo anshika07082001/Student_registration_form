@@ -17,7 +17,8 @@ export type formdetailsProps = {
 
 export type qualification = {
   label: string;
-  check: boolean;
+  // check: boolean;
+  value: string;
 };
 
 export type form = {
@@ -42,7 +43,7 @@ export type file = {
 export type formObj = {
   name: string;
   age: string;
-  qualification: never[];
+  qualification: string;
   image: string;
   pdf: string;
 };

@@ -1,8 +1,14 @@
-import { FormControlLabel, TextField, Checkbox, Button } from "@mui/material";
+import {
+  FormControlLabel,
+  TextField,
+  Button,
+  FormLabel,
+  RadioGroup,
+  Radio,
+} from "@mui/material";
 import React from "react";
 import { studentProps } from "../Type/type";
 
-var studyArr: any = [];
 const StudentForm = (props: studentProps) => {
   // name and age input field handler checks for validation
   const stringInpHandler = (
@@ -17,23 +23,16 @@ const StudentForm = (props: studentProps) => {
         props.formArr[index].error = false;
       } else {
         props.formArr[index].error = true;
+
+        props.formArr[index].value = "";
       }
     }
     props.setFormArr([...props.formArr]);
   };
-  // Checkbox handler
-  const checkHandler = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    if (e.currentTarget.checked) {
-      props.qualification[index].check = true;
-      studyArr.push(props.qualification[index].label);
-    } else {
-      props.qualification[index].check = false;
-      studyArr.splice(index, 1);
-    }
-    props.setQualification([...props.qualification]);
+  // radio input handler
+  const radioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    props.formObj.qualification = e.currentTarget.value;
+    props.setFormObj({ ...props.formObj });
   };
   // change handler for file input fields checks for validation
   const fileHandler = (e: any, obj: any, index: number) => {
@@ -55,6 +54,8 @@ const StudentForm = (props: studentProps) => {
         props.fileArr[index].error = false;
       } else {
         props.fileArr[index].error = true;
+        props.fileArr[index].value = "";
+        props.fileArr[index].url = "";
       }
     }
     props.setFileArr([...props.fileArr]);
@@ -63,32 +64,40 @@ const StudentForm = (props: studentProps) => {
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     var obj: any;
-    if (studyArr.length > 0) {
-      props.fileArr.map((item) => {
-        props.formArr.map((ele) => {
-          if (item.url !== "" && ele.value !== "") {
-            item.error = false;
-            ele.error = false;
-            obj = {
-              name: props.formArr[0].value,
-              age: props.formArr[1].value,
-              qualification: studyArr,
-              image: props.fileArr[0].url,
-              pdf: props.fileArr[1].value,
-            };
-          }
-          if (item.url === "" && ele.value === "") {
-            item.error = true;
-            ele.error = true;
-          }
-        });
-      });
-      props.setFormObj(obj);
-      props.setFileArr([...props.fileArr]);
-      props.setFormArr([...props.formArr]);
-    } else {
-      alert("please select qualification");
+    // checks any input field is empty or not
+    props.fileArr.forEach((ele) => {
+      if (ele.url === "") {
+        ele.error = true;
+      } else {
+        ele.error = false;
+      }
+    });
+    props.formArr.forEach((ele) => {
+      if (ele.value === "") {
+        ele.error = true;
+      } else {
+        ele.error = false;
+      }
+    });
+    var fileIndex: any = props.fileArr.findIndex((ele) => ele.url === "");
+    var formIndex: any = props.formArr.findIndex((ele) => ele.value === "");
+    if (fileIndex === -1 && formIndex === -1) {
+      if (props.formObj.qualification !== "") {
+        obj = {
+          name: props.formArr[0].value,
+          age: props.formArr[1].value,
+          qualification: props.formObj.qualification,
+          image: props.fileArr[0].url,
+          pdf: props.fileArr[1].value,
+        };
+        props.setFormObj(obj);
+        localStorage.setItem("studentForm", JSON.stringify(obj));
+      } else {
+        alert("please select Qualifications");
+      }
     }
+    props.setFileArr([...props.fileArr]);
+    props.setFormArr([...props.formArr]);
   };
 
   return (
@@ -109,22 +118,24 @@ const StudentForm = (props: studentProps) => {
             />
           );
         })}
-        <div>
-          {props.qualification.map((item, index) => {
+        <FormLabel id="demo-controlled-radio-buttons-group">
+          Qualifications
+        </FormLabel>
+        <RadioGroup
+          aria-labelledby="demo-controlled-radio-buttons-group"
+          name="controlled-radio-buttons-group"
+          onChange={(e) => radioChange(e)}
+        >
+          {props.qualification.map((item) => {
             return (
               <FormControlLabel
-                key={index}
-                control={
-                  <Checkbox
-                    checked={item.check}
-                    onChange={(e) => checkHandler(e, index)}
-                  />
-                }
+                value={item.value}
+                control={<Radio />}
                 label={item.label}
               />
             );
           })}
-        </div>
+        </RadioGroup>
         {props.fileArr.map((item, index) => {
           return (
             <TextField

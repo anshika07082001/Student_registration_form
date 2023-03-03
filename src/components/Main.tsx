@@ -22,10 +22,10 @@ const Main = () => {
     },
   ]);
   var [qualification, setQualification] = useState([
-    { label: "High School", check: false },
-    { label: "Intermediate", check: false },
-    { label: "Graduation", check: false },
-    { label: "Post Graduation", check: false },
+    { label: "High School", value: "High School" },
+    { label: "Intermediate", value: "Intermediate" },
+    { label: "Graduation", value: "Graduation" },
+    { label: "Post Graduation", value: "Post Graduation" },
   ]);
   var [fileArr, setFileArr] = useState([
     {
@@ -52,15 +52,17 @@ const Main = () => {
   var [formObj, setFormObj] = useState({
     name: "",
     age: "",
-    qualification: [],
+    qualification: "",
     image: "",
     pdf: "",
   });
 
+  // console.log(formObj);
+
   return (
     <div className="container">
       {/* rendering of From Details */}
-      {formObj.age !== "" ? (
+      {formObj.age !== "" && formObj.age !== undefined ? (
         <FormDetails formObj={formObj} />
       ) : (
         // Rendering of student form

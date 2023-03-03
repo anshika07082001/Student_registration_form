@@ -14,15 +14,12 @@ const FormDetails = (props: formdetailsProps) => {
           Age: <b>{props.formObj.age}</b>
         </p>
         <p>
-          Qualifications:
-          {Object.values(props.formObj.qualification).map((item) => {
-            return <b>{item},</b>;
-          })}
+          Qualifications:<b>{props.formObj.qualification}</b>
         </p>
-        <img src={props.formObj.image} alt="" />
         <p>
           Id Proof Uploaded: <b>{props.formObj.pdf}</b>
         </p>
+        <img src={props.formObj.image} alt="" />
       </Card>
     </div>
   );
