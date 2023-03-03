@@ -59,7 +59,7 @@ const StudentForm = (props: studentProps) => {
     }
     props.setFileArr([...props.fileArr]);
   };
-
+  // button handler for submit function
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     var obj: any;
